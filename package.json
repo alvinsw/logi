@@ -1,0 +1,19 @@
+{ 
+  "name" : "logi"
+, "version" : "1.0.0"
+, "description" : "Simple logger for Node.js"
+, "keywords" : ["log", "logger", "logi"]
+, "license" : "MIT"
+, "author" : "Alvin Sebastian <a.sebastian@connect.qut.edu.au>"
+, "contributors" : []
+, "main" : "index.js"
+, "repository" :
+  { 
+    "type" : "git"
+  , "url" : "http://github.com/alvinsw/logi.git" 
+  }
+, "dependencies":
+  {
+  }
+, "engines": { "node": ">=0.10.0" }
+}
