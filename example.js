@@ -1,6 +1,6 @@
 var loggerFactory1 = require('logi')();
 
-var loggerFactory2 = require('logi')({dummy:true});
+var loggerFactory2 = require('logi')({threshold:true});
 
 var logger1 = loggerFactory1.create(module);
 var logger2 = loggerFactory2.create(module);
