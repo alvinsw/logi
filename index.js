@@ -30,7 +30,7 @@ var Factory = module.exports = function(opts) {
   }
 
   var factory = this;
-
+  this._loggers = {};
   var Logger = this.Logger = function Logger(filename) {
     this.scope = filename || 'DEFAULT';
   };
@@ -113,15 +113,27 @@ Object.defineProperties(proto, {
 proto.createLogger =
 proto.getLogger =
 proto.create = function(nodeModule) {
-  var filename = '';
+  //if (this.useRelativePath) filename = path.join(path.relative(process.cwd(), path.dirname(filename)), path.basename(filename));
+  var filename = resolveKey(nodeModule, this.showAbsolutePath);
+  if (!this._loggers[filename]) this._loggers[filename] = new this.Logger(filename);
+  return this._loggers[filename];
+};
+
+/** Clear the cache of the logger associated with the module */
+proto.release = proto.releaseLogger = function(nodeModule) {
+  var filename = resolveKey(nodeModule, this.showAbsolutePath);
+  delete this._loggers[filename];
+}
+
+function resolveKey(nodeModule, showAbsolutePath) {
+  var filename = 'DEFAULT';
   if (nodeModule) {
     if (typeof nodeModule == 'string') filename = nodeModule;
     else if (nodeModule.filename) filename = nodeModule.filename;
   }
-  if (!this.showAbsolutePath) filename = path.relative(path.dirname(require.main.filename), filename);
-  //if (this.useRelativePath) filename = path.join(path.relative(process.cwd(), path.dirname(filename)), path.basename(filename));
-  return new this.Logger(filename);
-};
+  if (!showAbsolutePath) filename = path.relative(path.dirname(require.main.filename), filename);
+  return filename;
+}
 
 function resolveAppenders(opts_) {
   var result = [];
